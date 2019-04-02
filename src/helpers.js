@@ -1,3 +1,5 @@
+/* @flow */
+
 import axios from 'axios';
 
 /**
@@ -6,7 +8,7 @@ import axios from 'axios';
  * @returns {Int} Id of the Meal with the least number of ingredients
  * @memberof RecipeController
  */
-export async function getMealFromRemoteSource(req, res, listOfMealIds) {
+export async function getMealFromRemoteSource(req: Request, res: Response, listOfMealIds: Object): Object {
 	const listOfMealsId = ["52964", "52963", "52962", "52961"];
 	let meals = [];
 	for (let mealId of listOfMealsId) {
@@ -19,12 +21,12 @@ export async function getMealFromRemoteSource(req, res, listOfMealIds) {
 	return getMealWithLeastNumberOfIngredients(meals);
 }
 
-async function getFromAPI(mealId) {
+async function getFromAPI(mealId: string): Object {
 	const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
 	return response;
 }
 
-function extractIngredients(meal) {
+function extractIngredients(meal: Object): Array<string> {
 	let ingredients = [];
 	for (let i = 1; i <= 20; i++) {
 		const key = `strIngredient${i}`
@@ -35,10 +37,10 @@ function extractIngredients(meal) {
 	return ingredients;
 }
 
-function getMealWithLeastNumberOfIngredients(meals) {
+function getMealWithLeastNumberOfIngredients(meals: Array<Object>): Object {
 	if (meals.length == 1) { 
 		return meals[0] 
 	} else {
-		return meals.sort((a, b) => a.numberOfIngredients - b.numberOfIngredients );
+		return meals.sort((a, b) => a.numberOfIngredients - b.numberOfIngredients);
 	}
 }

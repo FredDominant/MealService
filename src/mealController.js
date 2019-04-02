@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+/* @flow */
 import { getMealFromRemoteSource } from './helpers';
 
 /**
@@ -16,7 +15,7 @@ export default class RecipeController {
 	 * @returns {response} response
 	 * @memberof RecipeController
 	 */
-	async fetchMeal(req, res) {
+	async fetchMeal(req: any, res: any): Promise<any> {
 		const { data } = req.body;
 		if (data == null) return res.status(400).json({ message: 'Meal Id(s) are required' });
 
@@ -25,7 +24,6 @@ export default class RecipeController {
 		if (!Array.isArray(JSON.parse(data))) return res.status(400).json({ message: 'Data should be an array' })
 
 		const result = await getMealFromRemoteSource(req, res, JSON.parse(data));
-		// console.log("result isssss", result);
 		return res.status(200).json({ message: 'success', meals: result });
 	}
 
