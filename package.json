@@ -1,0 +1,24 @@
+{
+  "name": "meal-service",
+  "version": "1.0.0",
+  "description": "A service built with node.js that consumes The MealDB API",
+  "main": "app.js",
+  "scripts": {
+    "start": "babel-node app.js",
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Noblemajesty/MealService.git"
+  },
+  "keywords": [
+    "node",
+    "express"
+  ],
+  "author": "Fred Adewole",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Noblemajesty/MealService/issues"
+  },
+  "homepage": "https://github.com/Noblemajesty/MealService#readme"
+}
