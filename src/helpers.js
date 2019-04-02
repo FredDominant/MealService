@@ -11,10 +11,12 @@ export async function getMealFromRemoteSource(req, res, listOfMealIds) {
 	let meals = [];
 	for (let mealId of listOfMealsId) {
 		const { data } = await getFromAPI(mealId)
-		const meal = data.meals;
-		meals.push(meal);
+		const meal = data.meals[0];
+		const mealIngredients = extractIngredients(meal);
+		const mealWithIdAndIngredient = { mealId: meal.idMeal, mealIngredients, numberOfIngredients: mealIngredients.length };
+		meals.push(mealWithIdAndIngredient);
 	}
-	return meals;
+	return getMealWithLeastNumberOfIngredients(meals);
 }
 
 async function getFromAPI(mealId) {
@@ -23,5 +25,20 @@ async function getFromAPI(mealId) {
 }
 
 function extractIngredients(meal) {
-	
+	let ingredients = [];
+	for (let i = 1; i <= 20; i++) {
+		const key = `strIngredient${i}`
+		if (meal.hasOwnProperty(key)) {
+			if (meal[key].length > 0) ingredients.push(meal[key]);
+		}
+	}
+	return ingredients;
+}
+
+function getMealWithLeastNumberOfIngredients(meals) {
+	if (meals.length == 1) { 
+		return meals[0] 
+	} else {
+		return meals.sort((a, b) => a.numberOfIngredients - b.numberOfIngredients );
+	}
 }

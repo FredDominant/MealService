@@ -25,7 +25,7 @@ export default class RecipeController {
 		if (!Array.isArray(JSON.parse(data))) return res.status(400).json({ message: 'Data should be an array' })
 
 		const result = await getMealFromRemoteSource(req, res, JSON.parse(data));
-		console.log("result isssss", result);
+		// console.log("result isssss", result);
 		return res.status(200).json({ message: 'success', meals: result });
 	}
 
