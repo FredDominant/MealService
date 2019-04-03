@@ -13,7 +13,7 @@ export async function getMealFromRemoteSource(req: Request, res: Response, listO
 		const { data } = await getFromAPI(mealId)
 		const meal = data.meals[0];
 		const mealIngredients = extractIngredients(meal);
-		const mealWithIdAndIngredient = { mealId: meal.idMeal, mealIngredients, numberOfIngredients: mealIngredients.length };
+		const mealWithIdAndIngredient = { mealId: meal.idMeal, mealName: meal.strMeal, mealIngredients, numberOfIngredients: mealIngredients.length };
 		meals.push(mealWithIdAndIngredient);
 	}
 	return getMealWithLeastNumberOfIngredients(meals);
@@ -25,8 +25,13 @@ export async function getMealFromRemoteSource(req: Request, res: Response, listO
  * @returns {Object} response object from the api
  */
 async function getFromAPI(mealId: string): Object {
-	const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
-	return response;
+	let response = null;
+	try {
+		response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
+	} catch(error) {
+		throw error;
+	}
+	if (response != null) return response;
 }
 
 /**
