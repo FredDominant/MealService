@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel src -d dist",
     "start": "npm run build && node ./dist/app.js",
-    "start-dev": "babel-node ./src/app.js",
+    "start-dev": "nodemon --exec babel-node ./src/app.js",
     "test": "npm test",
     "flow": "flow"
   },
@@ -25,6 +25,13 @@
   },
   "homepage": "https://github.com/Noblemajesty/MealService#readme",
   "devDependencies": {
+    "flow-bin": "^0.96.0",
+    "nodemon": "^1.18.10"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
     "@babel/preset-env": "^7.4.2",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
@@ -33,12 +40,6 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
-    "babel-preset-stage-0": "^6.24.1",
-    "flow-bin": "^0.96.0"
-  },
-  "dependencies": {
-    "axios": "^0.18.0",
-    "body-parser": "^1.18.3",
-    "express": "^4.16.4"
+    "babel-preset-stage-0": "^6.24.1"
   }
 }
