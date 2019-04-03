@@ -17,13 +17,20 @@ export default class RecipeController {
 	 */
 	async fetchMeal(req: any, res: any): Promise<any> {
 		const { data } = req.body;
+
 		if (data == null) return res.status(400).json({ message: 'Meal Id(s) are required' });
 
-		if (data.trim().length < 1) return res.status(400).json({ message: 'No meal Id(s) passed' });
+		let listOfIds;
+		if (typeof data == typeof "string") { 
+			listOfIds = JSON.parse(data) 
+		} else { 
+			listOfIds = data; 
+		}
 
-		if (!Array.isArray(JSON.parse(data))) return res.status(400).json({ message: 'Data should be an array' })
+		if (!Array.isArray(listOfIds)) return res.status(400).json({ message: 'An array of meal Id(s) should be passed' });
+		if (listOfIds.length < 1) return res.status(400).json({ message: 'No meal Id(s) passed' });
 
-		const result = await getMealFromRemoteSource(req, res, JSON.parse(data));
+		const result = await getMealFromRemoteSource(req, res, listOfIds);
 		return res.status(200).json({ message: 'success', meals: result });
 	}
 

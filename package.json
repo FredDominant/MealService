@@ -7,7 +7,6 @@
     "build": "babel src -d dist",
     "start": "npm run build && node ./dist/app.js",
     "start-dev": "nodemon --exec babel-node ./src/app.js",
-    "test": "npm test",
     "flow": "flow"
   },
   "repository": {
