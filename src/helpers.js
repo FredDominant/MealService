@@ -1,17 +1,15 @@
 /* @flow */
-
 import axios from 'axios';
 
 /**
  * @description Takes a list of parameters and fetches the meals from TheMealDB.com
  * @param	{Array} listOfIds a list of IDs passed from the request 
  * @returns {Int} Id of the Meal with the least number of ingredients
- * @memberof RecipeController
+ * @export 
  */
 export async function getMealFromRemoteSource(req: Request, res: Response, listOfMealIds: Object): Object {
-	const listOfMealsId = ["52964", "52963", "52962", "52961"];
 	let meals = [];
-	for (let mealId of listOfMealsId) {
+	for (let mealId of listOfMealIds) {
 		const { data } = await getFromAPI(mealId)
 		const meal = data.meals[0];
 		const mealIngredients = extractIngredients(meal);
@@ -21,11 +19,21 @@ export async function getMealFromRemoteSource(req: Request, res: Response, listO
 	return getMealWithLeastNumberOfIngredients(meals);
 }
 
+/**
+ * @description Gets a meal detail from TheMelDB.com using the meal Id
+ * @param	{string} id the id of the meal to be fetched 
+ * @returns {Object} response object from the api
+ */
 async function getFromAPI(mealId: string): Object {
 	const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`);
 	return response;
 }
 
+/**
+ * @description Takes a Meal response object and extracts the ingredients
+ * @param	{Object} meal a meal object
+ * @returns {Array} a list of the ingredients
+ */
 function extractIngredients(meal: Object): Array<string> {
 	let ingredients = [];
 	for (let i = 1; i <= 20; i++) {
@@ -37,10 +45,15 @@ function extractIngredients(meal: Object): Array<string> {
 	return ingredients;
 }
 
+/**
+ * @description Takes a list of meal objects and returns the meal with the lowest number of ingredients
+ * @param	{Array} meals a list of meals 
+ * @returns {Object} Meal object with the smallest number of ingredients
+ */
 function getMealWithLeastNumberOfIngredients(meals: Array<Object>): Object {
 	if (meals.length == 1) { 
 		return meals[0] 
 	} else {
-		return meals.sort((a, b) => a.numberOfIngredients - b.numberOfIngredients);
+		return meals.sort((a, b) => a.numberOfIngredients - b.numberOfIngredients)[0];
 	}
 }
